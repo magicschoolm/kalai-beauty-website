@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kalai's Beauty Salon &amp; Spa">
+  <rect width="64" height="64" rx="14" fill="#ede6fa" />
+  <path d="M20 14v36h6V36l12 14h8L31 32l12-12h-8L26 29V14z" fill="#6b4fa8" />
+  <circle cx="47" cy="47" r="6" fill="#3f7a5a" />
+</svg>
