@@ -1,0 +1,1395 @@
+/* =============================================================================
+   index.css  —  ALL of the site's styling starts here
+   -----------------------------------------------------------------------------
+   This file has FOUR parts, in order:
+
+     1. @tailwind directives  -> pulls in Tailwind's utility classes
+     2. :root variables       -> the design "tokens" (colours, spacing, fonts)
+     3. @layer base           -> default styles for plain HTML tags
+     4. @layer components     -> reusable classes like .btn and .card
+
+   RULE OF THUMB (which do I use where?)
+     - Tailwind utility classes  -> layout: flex, grid, gap, padding, margins.
+     - Component classes (.btn)  -> repeating pieces of UI, so they look the
+                                    same everywhere and you edit them in ONE
+                                    place.
+     - :root variables           -> change a brand colour here and it updates
+                                    everywhere it is used.
+   ============================================================================= */
+
+/* --- 1. Tailwind ------------------------------------------------------------ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- 2. DESIGN TOKENS -------------------------------------------------------
+   These CSS variables are the raw values behind the whole design.
+   Change a colour here and every place that uses it updates automatically. */
+:root {
+  /* Colour — single light theme only */
+  --bg: #faf8ff;
+  --surface: #ffffff;
+  --ink: #2a2438;
+  --mute: #6e6683;
+  --primary: #6b4fa8;
+  --primary-strong: #5a4091;
+  --lav-tint: #ede6fa;
+  --lav: #a995e0;
+  --sage: #3f7a5a;
+  --sage-soft: #8fc2a0;
+  --line: #e5ddf1;
+  --danger: #a3324a;
+
+  /* Typography — display font for headings, body font for text */
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Spacing & shape */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+  --shadow-sm: 0 8px 24px -18px rgb(42 36 56 / 0.5);
+  --shadow: 0 26px 60px -40px rgb(107 79 168 / 0.75);
+  --content: 70rem;
+  --gutter: clamp(1.1rem, 4vw, 3rem);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --fast: 180ms;
+  --slow: 520ms;
+
+  --focus: 3px solid var(--primary);
+}
+
+/* --- 3. BASE ---------------------------------------------------------------
+   Defaults applied to plain HTML tags everywhere on the site. */
+@layer base {
+  /* Make box sizes predictable: padding/border count INSIDE the width. */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Let anchor links (e.g. #enquiry) animate smoothly. */
+    scroll-behavior: smooth;
+    /* Space above a jumped-to heading so the sticky header does not cover it. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* When the visitor asks for less motion, turn off smooth scrolling. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Highlighted text selection colour. */
+  ::selection {
+    background: var(--primary);
+    color: #fff;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden; /* stop accidental sideways scrolling */
+  }
+
+  /* Headings all share the elegant serif font. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.12;
+    margin: 0 0 var(--space-2);
+    text-wrap: balance; /* stops ugly single-word last lines */
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 2rem + 3vw, 4.4rem);
+  }
+  h2 {
+    font-size: clamp(2rem, 1.7rem + 1.6vw, 3rem);
+  }
+  h3 {
+    font-size: clamp(1.25rem, 1.16rem + 0.44vw, 1.5rem);
+  }
+
+  p {
+    margin: 0 0 var(--space-2);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  /* The visible outline when you Tab to something with the keyboard. */
+  :focus-visible {
+    outline: var(--focus);
+    outline-offset: 3px;
+  }
+}
+
+/* --- 4. COMPONENT CLASSES ---------------------------------------------------
+   Reusable building blocks. Change once here -> changes everywhere. */
+@layer components {
+  /* Page width wrapper. Centers content and adds left/right padding. */
+  .container {
+    width: min(var(--content), 100% - (var(--gutter) * 2));
+    margin-inline: auto;
+  }
+
+  /* Vertical breathing room around a section. */
+  .section {
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  /* Accessibility: a link that is hidden until keyboard-focused. */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--primary);
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0 0 var(--radius-sm) 0;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+
+  /* Accessibility: hide visually but keep for screen readers. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---------- Small text styles ---------- */
+  .eyebrow {
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--sage);
+    margin: 0 0 var(--space-1);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  /* The little green line before an eyebrow label. */
+  .eyebrow::before {
+    content: "";
+    width: 1.6rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--sage-soft);
+    flex: none;
+  }
+
+  .lede {
+    color: var(--mute);
+    font-size: clamp(1.25rem, 1.16rem + 0.44vw, 1.5rem);
+    max-width: 46ch;
+  }
+
+  .muted {
+    color: var(--mute);
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform var(--fast) var(--ease),
+      box-shadow var(--fast) var(--ease);
+  }
+  @media (hover: hover) {
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform var(--fast) var(--ease),
+      background var(--fast) var(--ease);
+  }
+  .btn:hover {
+    background: var(--primary-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -14px var(--primary);
+  }
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  /* Outline version of the button (green). */
+  .btn-ghost {
+    background: transparent;
+    color: var(--sage);
+    border-color: var(--sage);
+  }
+  .btn-ghost:hover {
+    background: rgb(63 122 90 / 0.1);
+  }
+
+  /* A row that holds one or more buttons. */
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* ---------- Images / media frames ---------- */
+  .media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--lav-tint);
+    box-shadow: var(--shadow);
+  }
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* crop to fill, never stretch */
+  }
+  .media-portrait {
+    aspect-ratio: 4 / 5;
+  }
+  .media-square {
+    aspect-ratio: 1;
+  }
+  .media-wide {
+    aspect-ratio: 16 / 10;
+  }
+
+  /* Small rounded badge, e.g. "Price on request". */
+  .pill {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background: var(--lav-tint);
+    border: 1px solid var(--line);
+    color: var(--primary);
+    font-size: 0.8rem;
+  }
+
+  /* A highlighted "note" box. */
+  .note {
+    border-inline-start: 3px solid var(--sage-soft);
+    background: rgb(143 194 160 / 0.12);
+    padding: var(--space-2);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--mute);
+    font-size: 0.92rem;
+  }
+
+  /* ---------- Checklists (green dots) ---------- */
+  .list-check {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .list-check li {
+    position: relative;
+    padding-inline-start: 1.8rem;
+  }
+  .list-check li::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.6em;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--sage-soft);
+  }
+
+  /* ---------- Responsive layout helpers ----------
+     These encode "auto-fit" grids: columns wrap by themselves based on the
+     screen width, so you do not need breakpoint classes everywhere.
+     `minmax(min(20rem, 100%), 1fr)` means "each column is at least 20rem
+     wide, but never wider than the screen, and they share space equally". */
+  .grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr));
+  }
+  .grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  }
+
+  /* Two columns that become one on small screens (text + image). */
+  .split {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  }
+  .split-media {
+    max-width: 24rem;
+    width: 100%;
+    justify-self: start;
+  }
+
+  /* The big intro area at the top of the home page. */
+  .hero {
+    position: relative;
+    overflow: clip;
+    display: grid;
+    gap: clamp(1.75rem, 5vw, 4rem);
+    align-items: center;
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+  }
+  /* The soft lavender glow behind the hero. */
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -8rem;
+    right: -12rem;
+    width: 36rem;
+    height: 36rem;
+    max-width: 90vw;
+    background: radial-gradient(circle, rgb(169 149 224 / 0.25), transparent 65%);
+    pointer-events: none;
+  }
+  .hero h1 em {
+    color: var(--primary);
+    font-style: italic;
+  }
+  .hero-media {
+    position: relative;
+    max-width: 24rem;
+    margin-inline: auto;
+    width: 100%;
+  }
+  .hero-tag {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ---------- Header ---------- */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: #faf8ff;
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding-block: 0.85rem;
+    min-width: 0;
+  }
+
+  .brand {
+    min-width: 0;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    line-height: 1.15;
+  }
+  .brand span {
+    color: var(--sage);
+  }
+  .brand small {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.66rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 400;
+  }
+
+  .nav-list {
+    display: none; /* hidden on phones; shown on desktop below */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: clamp(0.6rem, 1.6vw, 1.35rem);
+  }
+  .nav-list a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.88rem;
+  }
+  .nav-list a:hover,
+  .nav-list a[aria-current="page"] {
+    color: var(--primary);
+  }
+  .nav-list a[aria-current="page"] {
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.45em;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 0.5rem;
+  }
+
+  /* Hamburger button (three lines). */
+  .nav-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    cursor: pointer;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    margin-inline: auto;
+    background: var(--ink);
+    transition: transform var(--fast) var(--ease);
+  }
+  /* Turn the 3 lines into an X when the menu is open. */
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile dropdown menu (closed by default). */
+  .mobile-nav {
+    display: none;
+    border-top: 1px solid var(--line);
+    padding: var(--space-2) 0 var(--space-3);
+  }
+  .mobile-nav[data-open="true"] {
+    display: block; /* shown when the hamburger is pressed */
+  }
+  .mobile-nav ul {
+    list-style: none;
+    margin: 0 0 var(--space-2);
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .mobile-nav a {
+    display: block;
+    padding: 0.7rem 0.4rem;
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .mobile-nav a:hover,
+  .mobile-nav a[aria-current="page"] {
+    background: var(--lav-tint);
+    color: var(--primary);
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    padding-block: var(--space-4);
+    margin-top: var(--space-5);
+  }
+  .footer-grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  }
+  .footer-grid h3 {
+    font-size: 1rem;
+    font-family: var(--font-body);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-weight: 500;
+  }
+  .footer-grid ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+  }
+  .footer-grid a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .footer-grid a:hover {
+    color: var(--primary);
+  }
+  .footer-bottom {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: space-between;
+    color: var(--mute);
+    font-size: 0.85rem;
+  }
+
+  /* ---------- Service card ---------- */
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .service-card .media {
+    /* stretch the image to the card edges */
+    margin: calc(var(--space-3) * -1) calc(var(--space-3) * -1) 0;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .service-card h3 {
+    margin-bottom: 0;
+  }
+  .service-card p {
+    color: var(--mute);
+    flex: 1;
+  }
+  .service-card > :last-child {
+    margin-top: auto; /* push the button to the bottom */
+    align-self: flex-start;
+  }
+
+  /* ---------- Gallery ---------- */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: var(--space-3);
+  }
+  .filter-bar button {
+    font: inherit;
+    font-size: 0.86rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background var(--fast) var(--ease);
+  }
+  .filter-bar button:hover {
+    background: var(--lav-tint);
+  }
+  .filter-bar button[aria-pressed="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  .gallery-grid {
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
+  }
+  .gallery-item {
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+    cursor: zoom-in;
+    display: block;
+    width: 100%;
+    font: inherit;
+    text-align: start;
+  }
+  .gallery-item .media {
+    border-radius: 0;
+    box-shadow: none;
+    aspect-ratio: 4 / 5;
+    display: block;
+  }
+  .gallery-caption {
+    display: block;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+    color: var(--mute);
+  }
+  @media (hover: hover) {
+    .gallery-item img {
+      transition: transform var(--slow) var(--ease);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.045);
+    }
+  }
+  .gallery-item[hidden] {
+    display: none;
+  }
+  .empty-state {
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    text-align: center;
+    color: var(--mute);
+  }
+
+  /* ---------- Lightbox (the full-screen photo viewer) ---------- */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 4vw, 3rem);
+    background: rgb(20 16 32 / 0.86);
+  }
+  .lightbox[data-open="true"] {
+    display: flex;
+  }
+  .lightbox-inner {
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: min(56rem, 100%);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .lightbox-inner img {
+    max-height: 74vh;
+    width: auto;
+    max-width: 100%;
+    margin-inline: auto;
+    object-fit: contain;
+  }
+  .lightbox-caption {
+    padding: 0.9rem 1.1rem;
+    font-size: 0.9rem;
+    color: var(--mute);
+    margin: 0;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 0.4);
+    background: rgb(255 255 255 / 0.12);
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  /* ---------- Forms ---------- */
+  .form {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .field label {
+    font-size: 0.86rem;
+    font-weight: 500;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    font: inherit;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    width: 100%;
+  }
+  .field textarea {
+    resize: vertical;
+  }
+  .field .error {
+    color: var(--danger);
+    font-size: 0.84rem;
+    min-height: 1.1em;
+  }
+  .field [aria-invalid="true"] {
+    border-color: var(--danger);
+  }
+  .form-status {
+    font-size: 0.9rem;
+    color: var(--sage);
+    min-height: 1.4em;
+    margin: 0;
+  }
+  .form-status[data-state="error"] {
+    color: var(--danger);
+  }
+
+  /* ---------- FAQ (native <details>/<summary>) ---------- */
+  .faq details {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    padding: 0.9rem 1.1rem;
+  }
+  .faq details + details {
+    margin-top: 0.75rem;
+  }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .faq summary::marker {
+    color: var(--primary);
+  }
+  .faq p {
+    margin: 0.7rem 0 0;
+    color: var(--mute);
+  }
+}
+
+/* --- 4b. DESKTOP LAYOUT -----------------------------------------------------
+   On wide screens (62rem = ~992px and up) show the full nav bar and hide the
+   mobile menu button. On phones the opposite happens. */
+@media (min-width: 62rem) {
+  .nav-list {
+    display: flex;
+  }
+  .nav-toggle {
+    display: none;
+  }
+  .mobile-nav {
+    display: none !important;
+  }
+}
+
+/* --- 5. PHONE LAYOUT --------------------------------------------------------
+   On narrow screens we stack things and tighten the spacing. */
+@media (max-width: 40rem) {
+  :root {
+    --gutter: 1.25rem;
+  }
+
+  .section {
+    padding-block: 2.5rem;
+  }
+
+  .hero {
+    padding-block: 1.75rem 2.5rem;
+    gap: 2rem;
+  }
+  /* The glow behind the hero is hidden on small screens. */
+  .hero::before {
+    display: none;
+  }
+  .hero h1 {
+    font-size: 2.35rem;
+    line-height: 1.08;
+  }
+  .hero h1 em {
+    display: inline;
+  }
+  h2 {
+    font-size: 1.85rem;
+    line-height: 1.15;
+  }
+
+  .lede {
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: none;
+  }
+
+  .eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    flex-wrap: wrap;
+    line-height: 1.5;
+  }
+
+  .btn-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+  .btn-row .btn {
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+  .service-card .media {
+    margin: -1.25rem -1.25rem 0;
+  }
+
+  .hero-media {
+    max-width: none;
+    width: 100%;
+  }
+  .hero-tag {
+    left: 0.75rem;
+    bottom: 0.75rem;
+    font-size: 0.72rem;
+  }
+
+  .split {
+    gap: 1.75rem;
+  }
+  .split-media {
+    max-width: none;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-bar button {
+    flex: none;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .faq details {
+    padding: 0.8rem 0.95rem;
+  }
+}
+
+
+/* =====================================================
+   SERVICES PAGE - E-COMMERCE STYLE LAYOUT
+   ===================================================== */
+
+.services-shop-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+/* LEFT SIDEBAR */
+
+
+
+
+.services-filter-title {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  margin: 0 0 0.4rem;
+}
+
+
+
+.services-category-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.7rem 0.55rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);margin-bottom: 5%;
+  text-align: left;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background var(--fast) var(--ease);
+}
+
+.services-category-button > span:first-child {
+  overflow-wrap: anywhere;
+}
+
+.services-count {
+  flex-shrink: 0;
+  color: var(--mute);
+  font-size: 0.8rem;
+}
+
+.services-category-button:hover,
+.services-category-button.active {
+  background: var(--lav-tint);
+  color: var(--primary);
+}
+
+.services-category-button.active {
+  font-weight: 500;
+}
+
+.services-expand-button {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary);
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.services-expand-button:hover {
+  background: var(--lav-tint);
+}
+
+/* INDIVIDUAL SERVICES DROPDOWN */
+
+
+.services-subcategory-button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--mute);
+  text-align: left;
+  font: inherit;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition:
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.services-subcategory-button:hover,
+.services-subcategory-button.active {
+  background: var(--lav-tint);
+  color: var(--primary);
+}
+
+/* RIGHT SIDE */
+
+.services-results {
+  min-width: 0;
+}
+
+.services-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.services-results-header h2 {
+  margin-bottom: 0.4rem;
+  font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+}
+
+.services-results-header p {
+  margin-bottom: 0;
+}
+
+.services-reset-button {
+  flex-shrink: 0;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--primary);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.services-reset-button:hover {
+  background: var(--lav-tint);
+}
+
+/* SERVICE CARD GRID */
+
+.services-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.services-product-grid > * {
+  min-width: 0;
+}
+
+.services-empty-state {
+  padding: 2rem;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--mute);
+  text-align: center;
+}
+
+/* TABLETS */
+
+@media (max-width: 1100px) {
+  .services-shop-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .services-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .services-shop-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .services-results-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .services-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .services-product-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .services-results-header h2 {
+    font-size: 1.7rem;
+  }
+}
+
+/* Remove the width restriction from the product section */
+.services-page-section {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 32px 3vw;
+  box-sizing: border-box;
+}
+
+/* Allow the sidebar and products to fill the available width */
+.services-page-section .services-shop-layout {
+  width: 100%;
+  max-width: none;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 28px;
+}
+
+/* Four product cards on large screens */
+.services-page-section .services-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .services-page-section .services-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .services-page-section .services-shop-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .services-page-section .services-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+
+
+/* Scrollable filter sidebar */
+.services-sidebar {
+  position: sticky;
+  top: 160px; /* below the fixed/sticky header */
+  height: calc(100vh - 196px);
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  align-self: start;
+  display: block;
+  padding: 0 8px 16px 0;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #c8b8df transparent;
+}
+
+/* Categories must not stretch vertically */
+.services-filter-group {
+  display: block;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  flex: none;
+  align-self: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/* Compact category heading */
+.services-filter-heading {
+  display: flex;
+  align-items: center;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+}
+
+/* Collapsed categories show no service list */
+.services-subcategory-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Expanded service links */
+.services-subcategory-list li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile: use normal page scrolling */
+@media (max-width: 700px) {
+  .services-sidebar {
+    position: static;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+
+/* Align the filter sidebar with the results heading */
+.services-shop-layout {
+  align-items: start;
+}
+
+.services-sidebar {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  align-self: start;
+}
+
+/* Remove excess space above Browse Services */
+.services-sidebar-header {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.services-filter-title {
+  margin-top: 0 !important;
+}
+
+/* Center category labels and +/- buttons */
+.services-filter-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.services-filter-heading .services-category-button {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.services-expand-button {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+/* Keep category rows consistently spaced */
+.services-filter-group {
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+
+
+
+
+/* Header brand logo */
+.site-header .brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.site-header .brand-logo {
+  display: block;
+  width: 210px;
+  height: 64px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* Smaller logo on mobile */
+@media (max-width: 600px) {
+  .site-header .brand-logo {
+    width: 145px;
+    height: 50px;
+  }
+}
+/* Stack logo and location vertically */
+.site-header .brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.site-header .brand-logo {
+  display: block;
+  width: 190px;
+  height: 52px;
+
+}
+
+.site-header .brand-location {
+  display: block;
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  color: #6b4ba3;
+}
+
+@media (max-width: 600px) {
+  .site-header .brand-logo {
+    width: 145px;
+    height: 42px;
+  }
+
+  .site-header .brand-location {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+}
