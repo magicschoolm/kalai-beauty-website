@@ -22,11 +22,13 @@ import { services } from "../data/services";
 import { course } from "../data/course";
 
 // The photos used on this page. Importing an image gives us its URL.
-import heroImage from "../assets/images/hero/hero_2.jpg";
-import bridalImage from "../assets/images/bridal/bridal-makeup-styling.webp";
-import hairImage from "../assets/images/hair/floral-hairstyle.webp";
+import heroImage from "../assets/images/hero/hero.jpg";
+import bridalImage from "../assets/images/bridal/Bridal_2.jpg";
+import hairImage from "../assets/images/services/Basic to Advanced Haircuts_1.webp"
+import facialImage from "../assets/images/services/FacialS.jpg"
+import bridalImages from "../assets/images/bridal/Bridal_1.jpg"
 // import piercingImage from "../assets/images/services/ear-piercing-service.webp";
-import facialImage from "../assets/images/skin-care/facial-service-poster.webp";
+// import facialImage from "../assets/images/skin-care/";
 
 /**
  * Small helper: find a service by its id, or throw a clear error if the id is
@@ -139,7 +141,7 @@ export default function Home() {
 
     <ServiceCard
       service={serviceById("bridal-makeup")}
-      image={bridalImage}
+      image={bridalImages}
       alt="Bridal makeup and styling"
     />
   </div>

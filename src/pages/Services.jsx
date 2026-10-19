@@ -14,12 +14,15 @@ import Reveal from "../components/Reveal";
 import { site } from "../data/site";
 import { serviceCategories } from "../data/services";
 import { faqs } from "../data/faqs";
-// import stylingImage from "../assets/images/services/salon-styling-session.webp";
+import stylingImage from "../assets/images/services/ask-first.png";
 import hairImage from "../assets/images/hair/floral-hairstyle.webp";
 import bridalImage from "../assets/images/bridal/bridal-makeup-styling.webp";
 import facialImage from "../assets/images/skin-care/facial-service-poster.webp";
 // Automatically load every image in src/assets/images/services.
 // Filenames are matched to service names without spaces/punctuation/case.
+import ServiceDetailsModal from "../components/ServiceDetailsModal";
+import { serviceDetails } from "../data/serviceDetails";
+// import { serviceDetails } from "../data/serviceDetails";
 const imageModules = import.meta.glob(
   "../assets/images/services/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}",
   {
@@ -50,7 +53,7 @@ const serviceImages = Object.fromEntries(
 export default function Services() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedService, setSelectedService] = useState(null);
-
+  const [activeService, setActiveService] = useState(null);
   const [expandedCategories, setExpandedCategories] = useState([
     "skin-care",
   ]);
@@ -269,6 +272,7 @@ export default function Services() {
       service={service}
       image={image?.src}
       alt={image?.alt}
+      onViewDetails={setActiveService}
     />
   );
 })}
@@ -284,11 +288,11 @@ export default function Services() {
       </section>
 
       {/* HOW IT WORKS */}
-        <section className="services-page-section">
+        <section className="container section">
         <div className="split">
           <Reveal className="media media-wide">
             <img
-              // src={stylingImage}
+              src={stylingImage}
               alt="A styling service being carried out on a client in the salon"
               loading="lazy"
               decoding="async"
@@ -327,6 +331,29 @@ export default function Services() {
 
         <FAQList items={faqs} />
       </section>
+      
+{activeService && (
+  <>
+    {/* {console.log("Active service:", activeService)}
+    {console.log(
+      "Details found:",
+      serviceDetails[activeService.id]
+    )} */}
+
+    <ServiceDetailsModal
+      service={activeService}
+      details={serviceDetails[activeService.id]}
+      image={
+        serviceImages[normalizeName(activeService.name)]?.src
+      }
+      alt={
+        serviceImages[normalizeName(activeService.name)]?.alt
+      }
+      onClose={() => setActiveService(null)}
+    />
+  </>
+)}
+
     </>
   );
 }

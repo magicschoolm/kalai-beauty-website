@@ -12,7 +12,7 @@ import WhatsAppLink from "../components/WhatsAppLink";
 import Reveal from "../components/Reveal";
 import { Link } from "react-router-dom";
 import { site } from "../data/site";
-import frontageImage from "../assets/images/salon/salon-frontage.webp";
+import frontageImage from "../assets/images/bridal/Bridal_3.jpg";
 
 export default function About() {
   return (

@@ -79,7 +79,7 @@ export const navigation = [
   { path: "/services", label: "Services" },
   { path: "/bridal", label: "Bridal" },
   { path: "/course", label: "Beautician Course" },
-  { path: "/gallery", label: "Gallery" },
+  // { path: "/gallery", label: "Gallery" },
   { path: "/about", label: "About" },
   { path: "/contact", label: "Contact" },
 ];

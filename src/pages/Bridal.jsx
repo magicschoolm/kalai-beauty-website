@@ -15,7 +15,7 @@ import FAQList from "../components/FAQList";
 import Reveal from "../components/Reveal";
 import { site } from "../data/site";
 import { faqs } from "../data/faqs";
-import bridalImage from "../assets/images/bridal/bridal-makeup-styling.webp";
+import bridalImage from "../assets/images/bridal/Bridal.jpg";
 
 export default function Bridal() {
   return (

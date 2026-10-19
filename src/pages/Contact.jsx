@@ -16,7 +16,7 @@ import Reveal from "../components/Reveal";
 import { site } from "../data/site";
 import { faqs } from "../data/faqs";
 import { telLink, waLink, intentMessage } from "../lib/whatsapp";
-import frontageImage from "../assets/images/salon/salon-frontage.webp";
+import frontageImage from "../assets/images/gmap/unnamed.jpg";
 
 export default function Contact() {
   return (
@@ -78,12 +78,24 @@ export default function Contact() {
       <section className="container section">
         <div className="split">
           <Reveal className="media media-wide">
-            <img
+
+          <div className="contact-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6781.955511779184!2d76.9083368!3d11.0238513!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba85fc48dd71297%3A0xf7de926d8c7698c1!2sKalai's%20beauty%20%26academy%20Coimbatore%20vadavalli!5e1!3m2!1sen!2sin!4v1792420046504!5m2!1sen!2sin"
+            width="100%"
+            height="380"
+            style={{border:0}}
+            allowfullscreen=""
+            loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+            >
+            </iframe>
+          </div>
+            
+            {/* <img
               src={frontageImage}
               alt="Salon frontage with the signboard visible"
               loading="lazy"
               decoding="async"
-            />
+            /> */}
           </Reveal>
           <Reveal>
             <p className="eyebrow">Find us</p>
@@ -96,7 +108,7 @@ export default function Contact() {
               <a className="btn" href={site.mapDirectionsUrl} target="_blank" rel="noopener noreferrer">
                 Get directions
               </a>
-              <WhatsAppLink label="Ask on WhatsApp" variant="ghost" />
+              <WhatsAppLink label="Schedule an Appointment" variant="ghost" />
             </div>
           </Reveal>
         </div>

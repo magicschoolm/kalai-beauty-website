@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { navigation, site } from "../data/site";
 import { waLink, intentMessage } from "../lib/whatsapp";
-import logo from "../assets/images/logo/logo_5.png";
+import logo from "../assets/images/logo/logo_2.png";
 export default function SiteHeader() {
   // `true` = mobile menu open, `false` = closed.
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,7 +79,7 @@ export default function SiteHeader() {
         {/* -------- WhatsApp button + hamburger -------- */}
         <div className="header-actions">
           <a
-            className="btn"
+            className="btn" 
             href={waLink(intentMessage("general"))}
             target="_blank"
             rel="noopener noreferrer"

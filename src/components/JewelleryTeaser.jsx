@@ -12,7 +12,7 @@
 
 import Reveal from "./Reveal";
 import WhatsAppLink from "./WhatsAppLink";
-import teaserImage from "../assets/images/jewellery-teaser/jewellery-product-teaser.webp";
+import teaserImage from "../assets/images/jewellery-teaser/jewellery.png";
 
 export default function JewelleryTeaser() {
   return (

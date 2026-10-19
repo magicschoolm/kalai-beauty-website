@@ -14,9 +14,13 @@
    */
 
   import Reveal from "./Reveal";
-  import WhatsAppLink from "./WhatsAppLink";
 
-  export default function ServiceCard({ service, image, alt }) {
+export default function ServiceCard({
+  service,
+  image,
+  alt,
+  onViewDetails,
+}) {    
     return (
       // `card` gives the white box; `service-card` stacks image, title, text.
       <Reveal as="article" className="card service-card">
@@ -34,12 +38,17 @@
         <p className="muted" style= {{ fontSize: ".9rem" }}>
           Price on request — ask us on WhatsApp.
         </p>
-
-        <WhatsAppLink
-          intent={service.category === "bridal" ? "bridal" : "salon"}
-          label={service.enquiryLabel}
-          variant="ghost"
-        />
+        <button
+          type="button"
+          className="btn btn-ghost"
+          onClick={() => {
+            // console.log(service.id);
+            // console.log(onViewDetails);
+            onViewDetails?.(service);
+          }}
+        >
+          View Details
+        </button>
       </Reveal>
     );
   }

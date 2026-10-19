@@ -131,7 +131,7 @@ export default function GalleryGrid({ items }) {
         </button>
         <div className="lightbox-inner">
           {/* Optional chaining (?.) is safe when lightboxItem is null. */}
-          <img src={lightboxItem?.src || ""} alt={lightboxItem?.alt || ""} />
+          <img src={lightboxItem?.src || null } alt={lightboxItem?.alt || ""} />
           <p className="lightbox-caption">
             {lightboxItem ? lightboxItem.caption || lightboxItem.alt : ""}
           </p>

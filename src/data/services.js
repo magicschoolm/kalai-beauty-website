@@ -37,7 +37,7 @@ export const serviceCategories = [
         enquiryLabel: "Ask about waxing",
       },
       {
-        id: "hand-leg-polishing",
+        id: "hand-and-leg-polishing",
         name: "Hand and Leg Polishing",
         summary: "Beauty polishing treatments for hands and legs.",
         enquiryLabel: "Ask about hand and leg polishing",
