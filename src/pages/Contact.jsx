@@ -84,8 +84,8 @@ export default function Contact() {
             width="100%"
             height="380"
             style={{border:0}}
-            allowfullscreen=""
-            loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+            // allowfullscreen=""
+            // loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
             >
             </iframe>
           </div>
