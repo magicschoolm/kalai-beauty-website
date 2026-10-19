@@ -25,7 +25,7 @@ import { course } from "../data/course";
 import heroImage from "../assets/images/hero/hero.jpg";
 import bridalImage from "../assets/images/bridal/Bridal_2.jpg";
 import hairImage from "../assets/images/services/Basic to Advanced Haircuts_1.webp"
-import facialImage from "../assets/images/services/FacialS.jpg"
+import facialImage from "../assets/images/services/Facials.jpg"
 import bridalImages from "../assets/images/bridal/Bridal_1.jpg"
 // import piercingImage from "../assets/images/services/ear-piercing-service.webp";
 // import facialImage from "../assets/images/skin-care/";
